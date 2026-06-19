@@ -2,6 +2,7 @@ import express from "express";
 import { PrismaClient } from "../generated/prisma/client.js";
 import { PrismaPg } from "@prisma/adapter-pg";
 import dotenv from "dotenv";
+import watchRoutes from "./routes/watch.route.js";
 
 const app = express();
 const PORT = 5000;
@@ -35,18 +36,7 @@ app.post("/api/watches", async (req, res)=>{
   }
 })
 
-app.get("/api/watches", async (req, res)=>{
-  try {
-    const watches = await prisma.products.findMany();
-    if(watches.length === 0){
-      res.status(404).json({ message: "No watches found" });
-    }
-    res.json(watches);
-  } catch (error) {
-    console.error("Error fetching watches:", error);
-    res.status(500).json({ error: "Failed to fetch watches" });
-  }
-})
+app.use("/api/watches", watchRoutes)
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
