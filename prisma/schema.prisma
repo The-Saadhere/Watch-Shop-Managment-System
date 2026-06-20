@@ -23,4 +23,25 @@ model products {
   sellingPrice  Float     
   stock Int
   created_at    DateTime? @default(now()) @db.Timestamptz(6)
+   purchases purchases[] 
+}
+
+model suppliers {
+  id      Int       @id @default(autoincrement())
+  name    String    @db.VarChar(255)
+  contact String    @db.VarChar(255)
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+  purchases purchases[]    
+}
+
+model purchases {
+  id          Int       @id @default(autoincrement())
+  productId   Int
+  supplierId  Int
+  quantity    Int
+  totalPrice  Float     
+  purchaseDate DateTime? @default(now()) @db.Timestamptz(6)
+
+  product     products   @relation(fields: [productId], references: [id])
+  supplier    suppliers  @relation(fields: [supplierId], references: [id])
 }
