@@ -1,13 +1,10 @@
 import { Router } from "express";
 import { PrismaClient } from "../../generated/prisma/client.js";
 import { PrismaPg } from "@prisma/adapter-pg";
-import dotenv from "dotenv";
 import { getWatches } from "../controllers/watch.controller.js";
-dotenv.config();
+import { prisma } from "../lib/prisma.js";
+
 const router = Router();
-const prisma = new PrismaClient({
-  adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
-});
 
 router.get("/", getWatches)
 
