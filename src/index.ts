@@ -12,7 +12,7 @@ app.get("/", (req, res) => {
 
 
 
-app.use("/api/watches", watchRoutes)
+app.use("/api/products", watchRoutes)
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
