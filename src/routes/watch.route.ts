@@ -1,6 +1,4 @@
 import { Router } from "express";
-import { PrismaClient } from "../../generated/prisma/client.js";
-import { PrismaPg } from "@prisma/adapter-pg";
 import { getWatches } from "../controllers/watch.controller.js";
 import { prisma } from "../lib/prisma.js";
 
