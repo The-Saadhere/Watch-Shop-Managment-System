@@ -19,3 +19,23 @@ export const getWatches = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Failed to fetch watches" });
   }
 }
+
+export const addProducts = async (req: Request, res: Response) => {
+
+  try {
+    const {name, modelNumber, purchasePrice,sellingPrice,stock} = req.body
+    const product = await prisma.products.create({
+      data: {
+        name,
+        modelNumber,
+        purchasePrice,
+        sellingPrice,
+        stock
+      }
+    })
+    res.status(201).json(product);
+  } catch (error) {
+    console.error("Error creating watch:", error);
+    res.status(500).json({ error: "Failed to create watch" });
+  }
+}

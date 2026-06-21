@@ -1,28 +1,10 @@
 import { Router } from "express";
-import { getWatches } from "../controllers/watch.controller.js";
+import { addProducts, getWatches } from "../controllers/watch.controller.js";
 import { prisma } from "../lib/prisma.js";
 
 const router = Router();
 
 router.get("/", getWatches)
 
-router.post("/add", async (req, res)=>{
-
-  try {
-    const {name, modelNumber, purchasePrice,sellingPrice,stock} = req.body
-    const product = await prisma.products.create({
-      data: {
-        name,
-        modelNumber,
-        purchasePrice,
-        sellingPrice,
-        stock
-      }
-    })
-    res.status(201).json(product);
-  } catch (error) {
-    console.error("Error creating watch:", error);
-    res.status(500).json({ error: "Failed to create watch" });
-  }
-})
+router.post("/add", addProducts)
 export default router;
