@@ -41,7 +41,7 @@ export const addProducts = async (req: Request, res: Response) => {
 
 export const getWatchById = async (req: Request, res: Response) => {
   try {
-    const { id: string } = await req.params;
+      let { id } = req.params;
     const watch = await prisma.products.findUnique({
       where: { id: parseInt(id) }
     });
