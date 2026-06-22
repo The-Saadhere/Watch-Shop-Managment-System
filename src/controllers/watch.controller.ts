@@ -1,10 +1,6 @@
 import { Router, Request, Response } from "express";
-import { PrismaClient } from "../../generated/prisma/client.js";
-import { PrismaPg } from "@prisma/adapter-pg";
+
 import { prisma } from "../lib/prisma.js";
-import dotenv from "dotenv";
-dotenv.config();
-const router = Router();
 
 
 export const getWatches = async (req: Request, res: Response) => {
@@ -40,5 +36,21 @@ export const addProducts = async (req: Request, res: Response) => {
   } catch (error) {
     console.error("Error creating watch:", error);
     res.status(500).json({ error: "Failed to create watch" });
+  }
+}
+
+export const getWatchById = async (req: Request, res: Response) => {
+  try {
+    const { id: string } = await req.params;
+    const watch = await prisma.products.findUnique({
+      where: { id: parseInt(id) }
+    });
+    if (!watch) {
+      return res.status(404).json({ message: "Watch not found" });
+    }
+    return res.json(watch);
+  } catch (error) {
+    console.error("Error fetching watch:", error);
+    return res.status(500).json({ error: "Failed to fetch watch" });
   }
 }
