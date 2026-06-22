@@ -24,6 +24,9 @@ export const addProducts = async (req: Request, res: Response) => {
 
   try {
     const {name, modelNumber, purchasePrice,sellingPrice,stock} = req.body
+    if(!name || !modelNumber || !purchasePrice || !sellingPrice || !stock) {
+      return res.status(400).json({ error: "All fields are required" });
+    }
     const product = await prisma.products.create({
       data: {
         name,
