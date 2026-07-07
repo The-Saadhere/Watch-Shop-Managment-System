@@ -1,7 +1,6 @@
-import { Router, Request, Response } from "express";
+import { Request, Response } from "express";
 
 import { prisma } from "../lib/prisma.js";
-
 
 export const getWatches = async (req: Request, res: Response) => {
   try {
@@ -41,7 +40,7 @@ export const addProducts = async (req: Request, res: Response) => {
 
 export const getWatchById = async (req: Request, res: Response) => {
   try {
-      let { id } = req.params;
+    const { id } = req.params;
     const watch = await prisma.products.findUnique({
       where: { id: parseInt(id) }
     });
@@ -53,4 +52,40 @@ export const getWatchById = async (req: Request, res: Response) => {
     console.error("Error fetching watch:", error);
     return res.status(500).json({ error: "Failed to fetch watch" });
   }
-}
+};
+
+export const likeProduct = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const productId = parseInt(id, 10);
+
+    if (Number.isNaN(productId)) {
+      return res.status(400).json({ error: "Invalid product id" });
+    }
+
+    const product = await prisma.products.findUnique({
+      where: { id: productId },
+    });
+
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    const updatedProduct = await prisma.products.update({
+      where: { id: productId },
+      data: {
+        likes: {
+          increment: 1,
+        },
+      },
+    });
+
+    return res.status(200).json({
+      message: "Product liked successfully",
+      product: updatedProduct,
+    });
+  } catch (error) {
+    console.error("Error liking product:", error);
+    return res.status(500).json({ error: "Failed to like product" });
+  }
+};
