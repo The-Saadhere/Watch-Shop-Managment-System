@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 import { prisma } from "../lib/prisma.js";
 
@@ -80,3 +80,5 @@ export const signin = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Failed to sign in" });
   }
 };
+
+// Not compeleted project #TODO
